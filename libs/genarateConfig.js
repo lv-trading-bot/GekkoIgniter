@@ -20,7 +20,7 @@ const genarateRealtimeConfig = (path, config) => {
 
         // Update Config
         // watch
-        curConfig.watch.exchange = config.exchange;
+        // curConfig.watch.exchange = config.exchange;
         curConfig.watch.asset = config.asset_name;
         curConfig.watch.currency = config.currency_name;
 
