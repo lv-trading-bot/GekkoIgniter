@@ -8,6 +8,8 @@ const createAndRunNewRealtimeGekkoContainer = (id, {configName, containerName, i
         `CONFIG_NAME=${configName}`,
         "-e",
         `MODE=realtime`,
+        "-e",
+        `E_IGNITER=${containerName}`,
         "-v",
         `${__dirname}/../binding_directory/${id}/config.js:/usr/src/app/${configName}`,
         "-v",
