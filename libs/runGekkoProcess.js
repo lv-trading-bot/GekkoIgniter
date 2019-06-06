@@ -1,6 +1,6 @@
 const { runChildProcess } = require('./runChildProcess');
 
-const createAndRunNewRealtimeGekkoContainer = (id, {configName, containerName, imageName}) => {
+const createAndRunNewRealtimeGekkoContainer = (id, {configName, containerName, imageName, networkName}) => {
     let agrs = [
         "run",
         "-d",
@@ -20,6 +20,8 @@ const createAndRunNewRealtimeGekkoContainer = (id, {configName, containerName, i
         containerName,
         "--restart", 
         "unless-stopped",
+        "--network",
+        networkName,
         imageName
     ];
 

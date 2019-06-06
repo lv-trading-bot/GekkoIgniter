@@ -5,6 +5,7 @@ const utils = require('../utils');
 const _ = require('lodash');
 
 const gekkoImageName = utils.getConfig().gekkoImageName;
+const networkName = utils.getConfig().networkName;
 const nameConfigInGekko = utils.getConfig().nameConfigInGekko;
 
 const prefixGekkoContainer = 'test_auto_run_gekko';
@@ -114,7 +115,8 @@ const postRunGekko = (req, res, next) => {
             return createAndRunNewRealtimeGekkoContainer(id, {
                 configName: `${nameConfigInGekko}.js`,
                 containerName: containerName,
-                imageName: gekkoImageName
+                imageName: gekkoImageName,
+                networkName: networkName
             })
         })
         .then(code => {
