@@ -25,23 +25,23 @@ const genarateRealtimeConfig = (path, config) => {
         curConfig.watch.currency = config.currency_name;
 
         // tradingAdvisor
-        curConfig.tradingAdvisor.candleSize = config.candleSize;
+        curConfig.tradingAdvisor.candleSize = parseInt(config.candleSize);
 
         // OMLBCTWithStopTradePaperTrade
-        curConfig["OMLBCTWithStopTradePaperTrade"].stopLoss = config.stopLoss;
-        curConfig["OMLBCTWithStopTradePaperTrade"].takeProfit = config.takeProfit;
-        curConfig["OMLBCTWithStopTradePaperTrade"].amountForOneTrade = config.amountForOneTrade;
-        curConfig["OMLBCTWithStopTradePaperTrade"].expirationPeriod = config.expirationPeriod;
-        curConfig["OMLBCTWithStopTradePaperTrade"].decisionThreshold = config.decisionThreshold;
-        curConfig["OMLBCTWithStopTradePaperTrade"].stopTradeLimit = config.stopTradeLimit;
-        curConfig["OMLBCTWithStopTradePaperTrade"].breakDuration = config.breakDuration;
+        curConfig["OMLBCTWithStopTradePaperTrade"].stopLoss = parseFloat(config.stopLoss);
+        curConfig["OMLBCTWithStopTradePaperTrade"].takeProfit = parseFloat(config.takeProfit);
+        curConfig["OMLBCTWithStopTradePaperTrade"].amountForOneTrade = parseFloat(config.amountForOneTrade);
+        curConfig["OMLBCTWithStopTradePaperTrade"].expirationPeriod = parseFloat(config.expirationPeriod);
+        curConfig["OMLBCTWithStopTradePaperTrade"].decisionThreshold = parseFloat(config.decisionThreshold);
+        curConfig["OMLBCTWithStopTradePaperTrade"].stopTradeLimit = parseFloat(config.stopTradeLimit);
+        curConfig["OMLBCTWithStopTradePaperTrade"].breakDuration = parseFloat(config.breakDuration);
         curConfig["OMLBCTWithStopTradePaperTrade"].modelInfo.model_type = config.model_type;
         curConfig["OMLBCTWithStopTradePaperTrade"].modelInfo.model_name = config.model_name;
-        curConfig["OMLBCTWithStopTradePaperTrade"].modelInfo.lag = config.lag;
+        curConfig["OMLBCTWithStopTradePaperTrade"].modelInfo.lag = parseInt(config.lag);
         curConfig["OMLBCTWithStopTradePaperTrade"].modelInfo.features = config.features;
         curConfig["OMLBCTWithStopTradePaperTrade"].modelInfo.label = config.label;
         curConfig["OMLBCTWithStopTradePaperTrade"].modelInfo.train_daterange = config.train_daterange;
-        curConfig["OMLBCTWithStopTradePaperTrade"].modelInfo.rolling_step = config.rolling_step;
+        curConfig["OMLBCTWithStopTradePaperTrade"].modelInfo.rolling_step = parseInt(config.rolling_step);
 
         // mailer
         curConfig.mailer.tag = config.mailTag || "[GEKKO]";
@@ -52,8 +52,8 @@ const genarateRealtimeConfig = (path, config) => {
             curConfig.trader.secret = config.secret;
         } else {
             curConfig.paperTrader.enabled = true;
-            curConfig.paperTrader.simulationBalance.asset = config.asset;
-            curConfig.paperTrader.simulationBalance.currency = config.currency;
+            curConfig.paperTrader.simulationBalance.asset = parseFloat(config.asset);
+            curConfig.paperTrader.simulationBalance.currency = parseFloat(config.currency);
         }
 
         try {

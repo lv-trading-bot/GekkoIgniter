@@ -10,6 +10,8 @@ const createAndRunNewRealtimeGekkoContainer = (id, {configName, containerName, i
         `MODE=realtime`,
         "-e",
         `E_IGNITER=${containerName}`,
+        "-e",
+        `LIVE_TRADE_MANAGER_BASE_API=${process.env.LIVE_TRADE_MANAGER_BASE_API}`,
         "-v",
         `${__dirname}/../binding_directory/${id}/config.js:/usr/src/app/${configName}`,
         "-v",
