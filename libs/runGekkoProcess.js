@@ -12,6 +12,8 @@ const createAndRunNewRealtimeGekkoContainer = (id, {configName, containerName, i
         `E_IGNITER=${containerName}`,
         "-e",
         `LIVE_TRADE_MANAGER_BASE_API=${process.env.LIVE_TRADE_MANAGER_BASE_API}`,
+        "-e",
+        `AUTHENTICATION_TOKEN=${process.env.AUTHENTICATION_TOKEN}`,
         "-v",
         `${__dirname}/../binding_directory/${id}/config.js:/usr/src/app/${configName}`,
         "-v",

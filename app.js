@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var fs = require('fs');
+const log = require('./log');
+
+const AUTHENTICATION_TOKEN = process.env.AUTHENTICATION_TOKEN;
 
 var indexRouter = require('./routes/index');
 var runGekkoRouter = require('./routes/run_gekko');
@@ -23,6 +26,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Authentication
+app.use((req, res, next) => {
+  let token = req.header("Authorization");
+  if (token !== AUTHENTICATION_TOKEN) {
+    log.warn("Receved a invalid request");
+    res.status(403).send({error: "Token is not valid"});
+    return;
+  } else {
+    next();
+  }
+})
 
 app.use('/', indexRouter);
 app.use('/run-gekko', runGekkoRouter);
