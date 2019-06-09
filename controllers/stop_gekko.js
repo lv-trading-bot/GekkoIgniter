@@ -23,6 +23,7 @@ const postStopGekko = (req, res, next) => {
         return;   
     }
 
+    log.info("stop", req.body.container_name);
     runChildProcess("docker", ["stop", req.body.container_name])
     .then(code => {
         res.send({code});

@@ -22,7 +22,7 @@ const postStartGekko = (req, res, next) => {
         res.status(500).send({error: "" + error});
         return;   
     }
-
+    log.info("start", req.body.container_name);
     runChildProcess("docker", ["start", req.body.container_name])
     .then(code => {
         res.send({code});

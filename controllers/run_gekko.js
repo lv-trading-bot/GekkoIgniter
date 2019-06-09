@@ -110,6 +110,7 @@ const postRunGekko = (req, res, next) => {
 
     let id = `${(new Date()).getTime()}_${(Math.random() * 1000).toFixed(0)}`;
     let containerName = `${prefixGekkoContainer}_${id}`;
+    log.info("run", containerName);
     prepareForRealtimeGekkoProcess(id, req.body)
         .then(path => {
             return createAndRunNewRealtimeGekkoContainer(id, {
