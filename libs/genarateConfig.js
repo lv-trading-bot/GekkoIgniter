@@ -1,5 +1,6 @@
 const fs = require('fs');
 const sampleRealtimeConfig = require('../binding_directory/sample_realtime_config');
+const sampleBacktestConfig = require('../binding_directory/sample-config-for-auto-backtest');
 const _ = require('lodash');
 
 const generateConfigString = (config) => {
@@ -65,6 +66,50 @@ const genarateRealtimeConfig = (path, config) => {
     })
 }
 
+const genarateBacktestConfig = (path, config) => {
+    return new Promise(async (resolve, reject) => {
+        let curConfig = _.cloneDeep(sampleBacktestConfig);
+
+        curConfig.marketsAndPair.currency = config.currency_name;
+        curConfig.marketsAndPair.asset = config.asset_name;
+        curConfig.candleSizes = parseInt(config.candleSize);
+        curConfig.dateRanges = {
+            trainDaterange: config.train_daterange,
+            backtestDaterange: config.backtest_daterange
+        };
+
+        curConfig.settingsOfStrategy = {
+            stopLoss: parseFloat(config.stopLoss),
+            takeProfit: parseFloat(config.takeProfit),
+            amountForOneTrade: parseFloat(config.amountForOneTrade),
+            expirationPeriod: parseFloat(config.expirationPeriod),
+            decisionThreshold: parseFloat(config.decisionThreshold),
+            backtest: true,
+            dataFile: "",
+            stopTradeLimit: -500000,
+            // totalWatchCandles: 24,
+            breakDuration: -1,
+            features: config.features,
+            label: "omlbct",
+            note: "Ghi chú tại đây"
+        }
+
+        curConfig.modelName = config.model_name;
+        curConfig.modelType = config.model_type;
+        curConfig.rollingStep = parseInt(config.rolling_step);
+        curConfig.modelLag = parseInt(config.lag);
+        curConfig.fileNameResult = "result.json";
+
+        try {
+            fs.writeFileSync(path, await generateConfigString(curConfig));
+            resolve(path);
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
 module.exports = {
-    genarateRealtimeConfig
+    genarateRealtimeConfig,
+    genarateBacktestConfig
 }

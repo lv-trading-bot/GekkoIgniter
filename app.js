@@ -12,6 +12,7 @@ var indexRouter = require('./routes/index');
 var runGekkoRouter = require('./routes/run_gekko');
 var stopGekkoRouter = require('./routes/stop_gekko');
 var startGekkoRouter = require('./routes/start_gekko');
+var backtestRouter = require('./routes/backtest');
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use('/', indexRouter);
 app.use('/run-gekko', runGekkoRouter);
 app.use('/stop-gekko', stopGekkoRouter);
 app.use('/start-gekko', startGekkoRouter);
+app.use('/backtest', backtestRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

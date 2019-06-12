@@ -1,4 +1,5 @@
 const { runChildProcess } = require('./runChildProcess');
+const fs = require('fs');
 
 const createAndRunNewRealtimeGekkoContainer = (id, {configName, containerName, imageName, networkName}) => {
     let agrs = [
@@ -33,6 +34,36 @@ const createAndRunNewRealtimeGekkoContainer = (id, {configName, containerName, i
     return runChildProcess('docker', agrs);
 }
 
+const createAndRunNewBacktestGekkoContainer = (id, {configName, containerName, imageName, networkName}) => {
+    let agrs = [
+        "run",
+        "-e",
+        `CONFIG_NAME=${configName}`,
+        "-e",
+        `MODE=backtest`,
+        "-e",
+        `E_IGNITER=${containerName}`,
+        "-e",
+        `ML_BASE_API=${process.env.ML_BASE_API}`,
+        "-e",
+        `AUTHENTICATION_TOKEN=${process.env.AUTHENTICATION_TOKEN}`,
+        "-v",
+        `${__dirname}/../binding_directory/backtest_${id}/backtest-config.js:/usr/src/app/${configName}`,
+        "-v",
+        `${__dirname}/../binding_directory/backtest_${id}/result.json:/usr/src/app/result.json`,
+        "--name",
+        containerName,
+        "--rm",
+        "--network",
+        networkName,
+        imageName
+    ];
+
+    //docker run --rm -e CONFIG_NAME="config1.js" -v "D:/H?c t?p/Lu?n Văn/Code/gekko/save_info/config1.js:/usr/src/app/config1.js" --name test_gekko_config test_gekko_config
+    return runChildProcess('docker', agrs);
+}
+
 module.exports = {
-    createAndRunNewRealtimeGekkoContainer
+    createAndRunNewRealtimeGekkoContainer,
+    createAndRunNewBacktestGekkoContainer
 }

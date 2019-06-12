@@ -1,14 +1,16 @@
-const { createAndRunNewRealtimeGekkoContainer } = require('../libs/runGekkoProcess');
-const { prepareForRealtimeGekkoProcess } = require('../libs/prepareForGekkoProcess');
+const { createAndRunNewBacktestGekkoContainer } = require('../libs/runGekkoProcess');
+const { prepareForBacktestGekkoProcess } = require('../libs/prepareForGekkoProcess');
+const {runChildProcess} = require('../libs/runChildProcess');
 const log = require('../log');
 const utils = require('../utils');
 const _ = require('lodash');
+const fs = require('fs');
 
 const gekkoImageName = utils.getConfig().gekkoImageName;
 const networkName = utils.getConfig().networkName;
 const nameConfigInGekko = utils.getConfig().nameConfigInGekko;
 
-const prefixGekkoContainer = 'live_gekko';
+const prefixGekkoContainer = 'backtest_gekko';
 
 // const sample_config = {
 //     exchange: "binance",
@@ -77,6 +79,7 @@ const paramsTypeOfPostRunGekko = {
     features: (val, body) => (_.isArray(val)),
     label: (val, body) => _.isString(val) && !_.isEmpty(val),
     train_daterange: (val, body) => _.isObject(val) && !_.isEmpty(val.from) && !_.isEmpty(val.to),
+    backtest_daterange: (val, body) => _.isObject(val) && !_.isEmpty(val.from) && !_.isEmpty(val.to),
     rolling_step: (val, body) => (!_.isNaN(parseFloat(val))),
     mailTag: (val, body) => true,
 
@@ -99,7 +102,7 @@ const validateReqBody = (body) => {
     }
 }
 
-const postRunGekko = (req, res, next) => {
+const postBacktest = (req, res, next) => {
 
     try {
         validateReqBody(req.body);
@@ -111,9 +114,9 @@ const postRunGekko = (req, res, next) => {
     let id = `${(new Date()).getTime()}_${(Math.random() * 1000).toFixed(0)}`;
     let containerName = `${prefixGekkoContainer}_${id}`;
     log.info("run", containerName);
-    prepareForRealtimeGekkoProcess(id, req.body)
+    prepareForBacktestGekkoProcess(id, req.body)
         .then(path => {
-            return createAndRunNewRealtimeGekkoContainer(id, {
+            return createAndRunNewBacktestGekkoContainer(id, {
                 configName: `${nameConfigInGekko}.js`,
                 containerName: containerName,
                 imageName: gekkoImageName,
@@ -121,7 +124,12 @@ const postRunGekko = (req, res, next) => {
             })
         })
         .then(code => {
-            res.send({ containerName, code });
+            let result = fs.readFileSync(`${__dirname}/../binding_directory/backtest_${id}/result.json`);
+            res.setHeader("content-type", "text/json");
+            res.end(result);
+        })
+        .then( () => {
+            return runChildProcess("rm", ["-rf", `${__dirname}/../binding_directory/backtest_${id}`])
         })
         .catch(err => {
             res.send(err);
@@ -130,5 +138,5 @@ const postRunGekko = (req, res, next) => {
 }
 
 module.exports = {
-    postRunGekko
+    postBacktest
 }

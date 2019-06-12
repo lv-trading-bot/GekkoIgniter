@@ -1,3 +1,4 @@
 *
 !.gitignore
 !sample_realtime_config.js
+!sample-config-for-auto-backtest.js
