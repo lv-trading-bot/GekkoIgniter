@@ -72,7 +72,7 @@ const paramsTypeOfPostRunGekko = {
     expirationPeriod: (val, body) => (!_.isNaN(parseFloat(val))),
     decisionThreshold: (val, body) => (!_.isNaN(parseFloat(val))),
     stopTradeLimit: (val, body) => (!_.isNaN(parseFloat(val))),
-    breakDuration: (val, body) => {body.stopTradeLimit = -1; return true;},
+    breakDuration: (val, body) => {body.breakDuration = -1; return true;},
     model_type: (val, body) => _.isString(val) && !_.isEmpty(val)/* && (val === 'rolling' || val === 'fixed')*/,
     model_name: (val, body) => _.isString(val) && !_.isEmpty(val)/* && (val === 'random_forest' || val === 'gradient_boosting')*/,
     lag: (val, body) => (!_.isNaN(parseFloat(val))),
