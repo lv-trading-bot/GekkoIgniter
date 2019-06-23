@@ -98,6 +98,8 @@ const genarateBacktestConfig = (path, config) => {
         curConfig.modelType = config.model_type;
         curConfig.rollingStep = parseInt(config.rolling_step);
         curConfig.modelLag = parseInt(config.lag);
+        curConfig.asset = config.asset ? parseFloat(config.asset) : 0;
+        curConfig.currency = config.currency ? parseFloat(config.currency) : 5000;
         curConfig.fileNameResult = "result.json";
 
         try {

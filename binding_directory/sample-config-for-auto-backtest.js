@@ -53,6 +53,10 @@ config.modelLag = 23;
 
 config.api_base = process.env.ML_BASE_API;
 
+config.asset = 0;
+
+config.currency = 5000;
+
 config.fileNameResult = process.env.FILE_NAME_RESULT
 
 module.exports = config;
